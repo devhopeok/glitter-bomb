@@ -15,14 +15,25 @@
         android:layout_gravity="center_horizontal" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/startBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="mOnClick"
+        android:onClick="mOnStartClick"
         android:text="Start"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:background="@color/colorPrimary"
         android:textColor="#ffffff"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/settingBtn"
+        android:text="Login with Google"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorPrimary"
+        android:textColor="#ffffff"
+        android:paddingHorizontal="15dp"
+        android:onClick="mOnSettingClick"/>
 </LinearLayout>
