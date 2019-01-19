@@ -1,6 +1,7 @@
 package develop.com.glitterbomb;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,6 +34,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        IntentFilter filter = new IntentFilter(Intent.ACTION_MEDIA_BUTTON);
+        MediaButtonIntentReceiver r = new MediaButtonIntentReceiver();
+        registerReceiver(r, filter);
 
         mSettingButton = findViewById(R.id.settingBtn);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
