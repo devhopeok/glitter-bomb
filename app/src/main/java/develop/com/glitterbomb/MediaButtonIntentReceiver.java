@@ -22,8 +22,8 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
         if (event == null) {
             return;
         }
-        int action = event.getAction();
-        if (action == KeyEvent.KEYCODE_HEADSETHOOK) {
+
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
             Toast.makeText(context, "BUTTON PRESSED!", Toast.LENGTH_SHORT).show();
         }
         abortBroadcast();

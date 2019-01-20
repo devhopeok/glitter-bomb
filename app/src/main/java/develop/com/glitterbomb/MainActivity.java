@@ -2,10 +2,14 @@ package develop.com.glitterbomb;
 
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     Button mSettingButton;
+    boolean isStarted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
 
         IntentFilter filter = new IntentFilter(Intent.ACTION_MEDIA_BUTTON);
         MediaButtonIntentReceiver r = new MediaButtonIntentReceiver();
+        filter.setPriority(1000);
         registerReceiver(r, filter);
 
         mSettingButton = findViewById(R.id.settingBtn);
@@ -97,6 +103,45 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_HEADSETHOOK:
+                if (!isStarted) {
+                    isStarted = true;
+                    Toast.makeText(this, "Started recording!", Toast.LENGTH_SHORT).show();
+                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+                    MediaPlayer mp = MediaPlayer.create(getApplicationContext(), notification);
+                    mp.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+
+                        @Override
+                        public void onSeekComplete(MediaPlayer mediaPlayer) {
+                            // TODO Auto-generated method stub
+                            mediaPlayer.stop();
+                        }
+                    });
+                    mp.start();
+                } else {
+                    isStarted = false;
+                    Toast.makeText(this, "Paused Recording", Toast.LENGTH_LONG).show();
+                    Uri pauseUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    MediaPlayer mp2 = MediaPlayer.create(getApplicationContext(), pauseUri);
+                    mp2.start();
+                }
+                return true;
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                if (isStarted) {
+                    isStarted = false;
+                    Toast.makeText(this, "Paused Recording", Toast.LENGTH_LONG).show();
+                    Uri pauseUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                    MediaPlayer mp2 = MediaPlayer.create(getApplicationContext(), pauseUri);
+                    mp2.start();
+                }
+                return true;
+        }
+        return false;
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {

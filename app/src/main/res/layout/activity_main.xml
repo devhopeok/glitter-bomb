@@ -10,7 +10,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello Glitter Bomb!"
+        android:text="Hello Glitter Bomb!\n\n1. Please click the pause button on the headphone jack to start recording\n2. Please click the pause button or volume up button on the headphone jack to stop."
+        android:layout_margin="20dp"
         android:layout_marginTop="50dp"
         android:layout_gravity="center_horizontal" />
 
