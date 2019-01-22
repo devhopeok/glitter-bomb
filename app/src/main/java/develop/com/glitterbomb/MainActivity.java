@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
         params.flags |= WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
         params.screenBrightness = 0;
         getWindow().setAttributes(params);
+
+        startActivity(new Intent(MainActivity.this, RecordActivity.class));
     }
 
     public void mOnSettingClick(View v) {
@@ -112,9 +114,16 @@ public class MainActivity extends AppCompatActivity {
                 if (!isStarted) {
                     isStarted = true;
                     Toast.makeText(this, "Started recording!", Toast.LENGTH_SHORT).show();
-                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+                    Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                     MediaPlayer mp = MediaPlayer.create(getApplicationContext(), notification);
-                    mp.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
+                    mp.start();
+                    startActivity(new Intent(MainActivity.this, RecordActivity.class));
+                } else {
+                    isStarted = false;
+                    Toast.makeText(this, "Paused Recording!", Toast.LENGTH_LONG).show();
+                    Uri pauseUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+                    MediaPlayer mp2 = MediaPlayer.create(getApplicationContext(), pauseUri);
+                    mp2.setOnSeekCompleteListener(new MediaPlayer.OnSeekCompleteListener() {
 
                         @Override
                         public void onSeekComplete(MediaPlayer mediaPlayer) {
@@ -122,12 +131,6 @@ public class MainActivity extends AppCompatActivity {
                             mediaPlayer.stop();
                         }
                     });
-                    mp.start();
-                } else {
-                    isStarted = false;
-                    Toast.makeText(this, "Paused Recording", Toast.LENGTH_LONG).show();
-                    Uri pauseUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                    MediaPlayer mp2 = MediaPlayer.create(getApplicationContext(), pauseUri);
                     mp2.start();
                 }
                 return true;
